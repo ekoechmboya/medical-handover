@@ -5,6 +5,10 @@ findings, and a reviewer must accept, reject, or edit them. The API never
 presents findings as executed clinical actions.
 """
 
+import os
+import threading
+
+from django.db import close_old_connections
 from django.shortcuts import get_object_or_404
 from rest_framework import status as http_status
 from rest_framework.response import Response
@@ -31,6 +35,24 @@ def _load_analysis(pk: int) -> Analysis:
         Analysis.objects.prefetch_related("findings__review"),
         pk=pk,
     )
+
+
+def _run_analysis_in_background(analysis_id: int, backend: str | None) -> None:
+    """Engine driver for the async create path.
+
+    Runs in a daemon thread so the web worker keeps serving requests while a
+    (potentially minutes-long, live-Gemini) run proceeds. Django's DB
+    connections are thread-local, so close stale connections at both ends and
+    never share the request thread's connection.
+    """
+    close_old_connections()
+    try:
+        analysis = Analysis.objects.get(pk=analysis_id)
+        run_analysis(analysis, backend_override=backend)
+    except Exception:  # noqa: BLE001 - background thread; never crash the worker
+        pass
+    finally:
+        close_old_connections()
 
 
 class HealthView(APIView):
@@ -64,7 +86,24 @@ class AnalysisListCreateView(APIView):
             records=data["records"],
             handover=data["handover"],
         )
-        run_analysis(analysis)
+        # The engine runs in the background by default: POST returns immediately
+        # and the client polls GET /api/analyses/{id}/ until status is terminal.
+        # This lets live-Gemini runs exceed any web-request timeout without
+        # aborting. Setting MH_ASYNC=0 restores the synchronous path (used by the
+        # transaction-isolated test suite and as a deploy escape hatch).
+        # Optional per-run emitter choice. When omitted, the server-wide
+        # MH_EMITTER_BACKEND env var (default "mock") applies via
+        # analysis_service.effective_backend().
+        backend = data.get("backend")
+        if os.environ.get("MH_ASYNC", "1") == "0":
+            run_analysis(analysis, backend_override=backend)
+        else:
+            threading.Thread(
+                target=_run_analysis_in_background,
+                args=(analysis.pk, backend),
+                daemon=True,
+                name=f"analysis-{analysis.pk}",
+            ).start()
         analysis = _load_analysis(analysis.pk)
         return Response(
             AnalysisDetailSerializer(analysis).data,

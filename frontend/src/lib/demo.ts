@@ -10,6 +10,7 @@
 import type { AnalysisInput } from "@/types/api";
 
 export const DEMO_SCENARIO: Omit<AnalysisInput, "mode"> = {
+  backend: "mock",
   patient_profile: {
     case_id: "demo_syn_01",
     title: "Synthetic demo — omitted clinical detail",

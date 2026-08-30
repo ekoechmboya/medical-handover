@@ -60,9 +60,12 @@ class AnalysisApiTests(TestCase):
     def setUpClass(cls):
         # The project .env now sets MH_EMITTER_BACKEND=gemini; tests must stay
         # offline and deterministic, so force the mock emitter for this suite.
+        # MH_ASYNC=0 keeps the create path synchronous: Django transaction tests
+        # run against an isolated, uncommitted DB that worker threads cannot see.
         super().setUpClass()
         cls._env_backend = mock.patch.dict(
-            os.environ, {"MH_EMITTER_BACKEND": "mock"}
+            os.environ,
+            {"MH_EMITTER_BACKEND": "mock", "MH_ASYNC": "0"},
         )
         cls._env_backend.start()
 
@@ -116,6 +119,48 @@ class AnalysisApiTests(TestCase):
             "generate", "verify", "detail", "reconcile", "dedup",
         ]
         assert len(body["findings"]) >= 1
+
+    def test_create_analysis_runs_async_by_default(self):
+        # The deployed contract: POST returns immediately with status="running"
+        # and the client polls until the status is terminal. MH_ASYNC is only
+        # disabled under the transaction-isolated test harness (see setUpClass),
+        # so re-enable it here for this single test.
+        with mock.patch.dict(os.environ, {"MH_ASYNC": "1"}, clear=False):
+            created = self.client.post(
+                "/api/analyses/", default_payload("baseline"), format="json"
+            ).data
+        assert created["status"] == "running"
+        assert created["findings"] == []
+        assert created["engine_meta"] == {}
+        detail = self.client.get(f"/api/analyses/{created['id']}/").data
+        assert detail["id"] == created["id"]
+
+    def test_engine_meta_records_per_request_backend(self):
+        # A client may override the server-wide emitter per run via the
+        # `backend` field; a gemini run without a key must fail cleanly and tag
+        # engine_meta with the chosen backend. The empty key forces the failure
+        # at client construction, before any network call.
+        with mock.patch.dict(
+            os.environ,
+            {"GEMINI_API_KEY": ""},
+            clear=False,
+        ):
+            resp = self.client.post(
+                "/api/analyses/",
+                {**default_payload("baseline"), "backend": "gemini"},
+                format="json",
+            )
+        assert resp.status_code == 201, resp.data
+        body = resp.data
+        assert body["status"] == "failed"
+        assert "GEMINI_API_KEY" in body["error"]
+        assert body["engine_meta"]["backend"] == "gemini"
+
+    def test_invalid_backend_rejected(self):
+        payload = default_payload()
+        payload["backend"] = "claude"
+        resp = self.client.post("/api/analyses/", payload, format="json")
+        assert resp.status_code == 400
 
     def test_list_analyses(self):
         self.client.post("/api/analyses/", default_payload("baseline"), format="json")

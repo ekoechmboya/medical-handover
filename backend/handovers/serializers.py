@@ -61,6 +61,9 @@ class AnalysisCreateSerializer(serializers.Serializer):
     records = RecordItemSerializer(many=True, allow_empty=False)
     handover = serializers.CharField(allow_blank=False)
     mode = serializers.ChoiceField(choices=("baseline", "advanced"))
+    backend = serializers.ChoiceField(
+        choices=("mock", "gemini"), required=False
+    )
 
     def validate_patient_profile(self, value):
         if not isinstance(value, dict):

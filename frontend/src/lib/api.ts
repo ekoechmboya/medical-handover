@@ -86,8 +86,20 @@ async function request<T>(path: string, init?: RequestInit, timeoutMs?: number):
   return (await response.json()) as T;
 }
 
-/** Long-running analysis request; allow a generous window for the live model. */
-const CREATE_TIMEOUT_MS = 10 * 60 * 1000;
+/**
+ * POST /api/analyses/ is async by design: the row is created and the engine runs
+ * in the background, so the request itself resolves quickly even on the live
+ * Gemini backend. The generous window below only guards a slow/unwarm pod.
+ */
+const CREATE_TIMEOUT_MS = 60 * 1000;
+
+/** Interval between status polls while awaiting a terminal status. */
+const POLL_INTERVAL_MS = 2000;
+
+/** Terminal statuses that end a poll loop. */
+function isTerminal(status: string): boolean {
+  return status === "completed" || status === "failed";
+}
 
 export const api = {
   async health(): Promise<HealthResponse> {
@@ -108,6 +120,23 @@ export const api = {
       { method: "POST", body: JSON.stringify(input) },
       CREATE_TIMEOUT_MS,
     );
+  },
+
+  /**
+   * Poll an analysis until it reaches a terminal status. Never aborts: a live
+   * Gemini run may take several minutes, so the caller waits for as long as the
+   * backend needs.
+   */
+  async waitForAnalysis(
+    id: number | string,
+    onUpdate?: (detail: AnalysisDetail) => void,
+  ): Promise<AnalysisDetail> {
+    for (;;) {
+      const detail = await this.getAnalysis(id);
+      onUpdate?.(detail);
+      if (isTerminal(detail.status)) return detail;
+      await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));
+    }
   },
 
   async submitReview(

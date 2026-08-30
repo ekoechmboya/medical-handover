@@ -7,11 +7,6 @@ import re
 from collections.abc import Mapping, Sequence
 
 from .schema import CATEGORIES, STATUSES, canonical_category
-from google.api_core.retry import Retry
-
-# Single-attempt retry policy: no automatic retries (see complete_json). Rate
-# limiting / backoff is handled by the caller so we never burst the API.
-_NO_RETRY = Retry(max_attempts=1)
 
 # Pinned baseline model for the hackathon comparison.
 #
@@ -195,17 +190,19 @@ class GeminiClient(LLMClient):
 
     def __init__(self, model: str | None = None, temperature: float = 0.0) -> None:
         try:
-            import google.generativeai as genai  # type: ignore
+            from google import genai  # type: ignore
+            from google.genai import types as genai_types  # type: ignore
         except ImportError as exc:  # pragma: no cover - depends on env
             raise RuntimeError(
-                "Gemini backend selected but `google-generativeai` is not "
+                "Gemini backend selected but `google-genai` is not "
                 "installed. Run: pip install -e \".[llm]\"."
             ) from exc
         api_key = os.environ.get("GEMINI_API_KEY")
         if not api_key:
             raise RuntimeError("GEMINI_API_KEY environment variable is not set.")
-        genai.configure(api_key=api_key)
         self._genai = genai
+        self._types = genai_types
+        self._client = genai.Client(api_key=api_key)
         self._model = model or os.environ.get("MH_EMITTER_MODEL", BASELINE_MODEL)
         self._temperature = temperature
         self._last_usage_metadata = None
@@ -216,25 +213,28 @@ class GeminiClient(LLMClient):
         return self._last_usage_metadata
 
     def complete_json(self, prompt: str) -> dict:
-        model = self._genai.GenerativeModel(
-            self._model,
-            generation_config={
-                "temperature": self._temperature,
-                "response_mime_type": "application/json",
-            },
-        )
-        # Disable the SDK's built-in retry: under the free-tier rate limit, the
-        # default retry storm multiplies every logical call into a burst of
-        # requests and exhausts the quota. Our caller (run_agent.RateLimitedClient)
-        # performs its own paced retries instead. Bound each call so a hung
+        # Single-attempt policy: disable the SDK's built-in retry so a
+        # retry-backed call never turns into a burst (under the free-tier rate
+        # limit, any retry storm exhausts the quota). Our caller
+        # (QuotaSafeClient / run_agent.RateLimitedClient) performs its own paced
+        # retries instead. Bound each call with a 30s timeout so a hung
         # connection fails fast and is retried by the wrapper.
-        resp = model.generate_content(
-            prompt, request_options={"retry": _NO_RETRY, "timeout": 30}
+        response = self._client.models.generate_content(
+            model=self._model,
+            contents=prompt,
+            config=self._types.GenerateContentConfig(
+                temperature=self._temperature,
+                response_mime_type="application/json",
+                http_options=self._types.HttpOptions(
+                    timeout=30_000,
+                    retry_options=self._types.HttpRetryOptions(attempts=1),
+                ),
+            ),
         )
         # Capture token usage for cost/observability reporting. Additive only;
         # baseline_emit still reads solely the parsed "findings" key.
-        self._last_usage_metadata = getattr(resp, "usage_metadata", None)
-        return json.loads(resp.text)
+        self._last_usage_metadata = getattr(response, "usage_metadata", None)
+        return json.loads(response.text)
 
 
 def get_client(backend: str | None = None, temperature: float = 0.0) -> LLMClient:

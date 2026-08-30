@@ -98,9 +98,18 @@ def emitter_backend() -> str:
     return os.environ.get("MH_EMITTER_BACKEND", "mock")
 
 
-def build_client():
+def effective_backend(override: str | None = None) -> str:
+    """Resolve the actual emitter backend for a run.
+
+    A per-request override (chosen client-side: mock vs gemini) wins over the
+    server-wide MH_EMITTER_BACKEND environment variable.
+    """
+    return override or emitter_backend()
+
+
+def build_client(backend_override: str | None = None):
     """Select the engine client. Offline by default; Gemini when configured."""
-    backend = emitter_backend()
+    backend = effective_backend(backend_override)
     client = get_client(backend=backend, temperature=0.0)
     if backend == "gemini":
         client = QuotaSafeClient(client)
@@ -188,28 +197,29 @@ def _persist_findings(analysis: Analysis, findings) -> None:
         )
 
 
-def run_analysis(analysis: Analysis) -> None:
+def run_analysis(analysis: Analysis, backend_override: str | None = None) -> None:
     """Run the engine for `analysis` and persist findings/status.
 
-    Synchronous by design for this milestone. Any engine failure leaves the
-    analysis with status="failed" and a useful `error` message instead of
-    crashing the request.
+    May be invoked from a background thread (the web view returns while the run
+    proceeds) or synchronously. Any engine failure leaves the analysis with
+    status="failed" and a useful `error` message instead of crashing the caller.
     """
+    backend = effective_backend(backend_override)
     try:
         case = build_case(analysis)
-        client = build_client()
+        client = build_client(backend_override)
 
         if analysis.mode == "baseline":
             findings = baseline_emit(case, client)
             meta = {
-                "backend": emitter_backend(),
+                "backend": backend,
                 "stages": ["generate"],
             }
         else:
             result = run_pipeline(case, client, enabled=set(ADVANCED_STAGES))
             findings = result.final
             meta = {
-                "backend": emitter_backend(),
+                "backend": backend,
                 "stages": ["generate", "verify", "detail", "reconcile", "dedup"],
                 "timing_s": result.timing,
                 "tokens": result.tokens,
@@ -221,7 +231,7 @@ def run_analysis(analysis: Analysis) -> None:
         analysis.error = ""
         analysis.status = "completed"
     except Exception as exc:  # noqa: BLE001
-        analysis.engine_meta = {"backend": emitter_backend()}
+        analysis.engine_meta = {"backend": backend}
         analysis.error = f"{type(exc).__name__}: {exc}"
         analysis.status = "failed"
     analysis.save()

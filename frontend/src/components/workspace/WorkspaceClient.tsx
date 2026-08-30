@@ -27,7 +27,13 @@ import { DEMO_SCENARIO } from "@/lib/demo";
 import { formatElapsed } from "@/lib/format";
 import { api } from "@/lib/api";
 
-import type { AnalysisDetail, AnalysisInput, Mode, RecordItem } from "@/types/api";
+import type {
+  AnalysisDetail,
+  AnalysisInput,
+  Backend,
+  Mode,
+  RecordItem,
+} from "@/types/api";
 
 interface RecordDraft {
   filename: string;
@@ -43,6 +49,7 @@ interface FormState {
   records: RecordDraft[];
   handover: string;
   mode: Mode;
+  backend: Backend;
 }
 
 const INITIAL_FORM: FormState = {
@@ -54,6 +61,7 @@ const INITIAL_FORM: FormState = {
   records: [{ filename: "", content: "" }],
   handover: "",
   mode: "advanced",
+  backend: "mock",
 };
 
 const STEPS = [
@@ -114,6 +122,7 @@ export function WorkspaceClient() {
       records: demo.records.map((record: RecordItem) => ({ ...record })),
       handover: demo.handover,
       mode: form.mode,
+      backend: form.backend,
     });
     setValidationErrors({});
   };
@@ -159,6 +168,7 @@ export function WorkspaceClient() {
       records,
       handover: form.handover.trim(),
       mode: form.mode,
+      backend: form.backend,
     };
   };
 
@@ -172,14 +182,19 @@ export function WorkspaceClient() {
     setElapsedMs(0);
     setStep(2);
     try {
-      const analysis = await api.createAnalysis(buildInput());
+      const created = await api.createAnalysis(buildInput());
       if (!mountedRef.current) return;
-      setResult(analysis);
+      const detail = await api.waitForAnalysis(created.id);
+      if (!mountedRef.current) return;
+      if (detail.status === "failed") {
+        setRunError(detail.error || "The analysis failed on the backend.");
+        return;
+      }
+      setResult(detail);
       setStep(3);
     } catch (err) {
       if (!mountedRef.current) return;
       setRunError(err instanceof Error ? err.message : "The analysis could not be run.");
-      setRunning(false);
     } finally {
       if (mountedRef.current) setRunning(false);
     }
@@ -475,6 +490,33 @@ export function WorkspaceClient() {
                     </div>
                   </Card>
 
+                  <Card>
+                    <CardHeader
+                      title="Model backend"
+                      subtitle="Where the intelligence runs."
+                      icon={<Bot aria-hidden="true" />}
+                    />
+                    <SegmentedControl
+                      name="analysis-backend"
+                      value={form.backend}
+                      onChange={(value) => setField("backend", value as Backend)}
+                      options={[
+                        {
+                          value: "mock",
+                          label: "Offline demo",
+                          description: "Instant · deterministic · no key",
+                          icon: <Bot aria-hidden="true" />,
+                        },
+                        {
+                          value: "gemini",
+                          label: "Live Gemini",
+                          description: "Real model · can take several minutes",
+                          icon: <Sparkles aria-hidden="true" />,
+                        },
+                      ]}
+                    />
+                  </Card>
+
                   <Card padded={false}>
                     <div className="p-5">
                       <Button
@@ -486,9 +528,9 @@ export function WorkspaceClient() {
                         <ArrowRight className="h-4 w-4" aria-hidden="true" />
                       </Button>
                       <p className="mt-2.5 text-center text-[11px] text-muted">
-                        {form.mode === "advanced"
-                          ? "Advanced mode may take a minute or two on the live model backend."
-                          : "Baseline mode is usually quick."}
+                        {form.backend === "gemini"
+                          ? "Live Gemini runs in the background; this page waits until it finishes — no timeout."
+                          : "Offline demo: results appear almost instantly."}
                       </p>
                     </div>
                     <div className="flex items-center justify-center gap-1.5 border-t border-line bg-background px-5 py-3">
@@ -536,9 +578,13 @@ export function WorkspaceClient() {
                   <p className="mx-auto mt-2 max-w-md text-sm text-muted">
                     {runError
                       ? undefined
-                      : form.mode === "advanced"
-                        ? "Running the agent pipeline against the source records. This may take a minute or two on the live model backend."
-                        : "Running the baseline one-shot analysis against the source records."}
+                      : form.backend === "gemini"
+                        ? form.mode === "advanced"
+                          ? "Running the agent pipeline against the live model. This can take several minutes — the review opens automatically when it finishes."
+                          : "Running the baseline one-shot analysis against the live model. This page stays open until it completes."
+                        : form.mode === "advanced"
+                          ? "Running the agent pipeline against the source records (offline demo backend)."
+                          : "Running the baseline one-shot analysis against the source records (offline demo backend)."}
                   </p>
 
                   {runError ? (

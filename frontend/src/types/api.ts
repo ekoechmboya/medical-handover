@@ -7,6 +7,8 @@
 
 export type Mode = "baseline" | "advanced";
 
+export type Backend = "mock" | "gemini";
+
 export type AnalysisStatus = "pending" | "running" | "completed" | "failed";
 
 export type ReviewDecision = "accepted" | "rejected" | "edited";
@@ -118,6 +120,8 @@ export interface AnalysisInput {
   records: RecordItem[];
   handover: string;
   mode: Mode;
+  /** Which LLM backend to use: "mock" (offline demo) or "gemini" (live). */
+  backend: Backend;
 }
 
 export interface ReviewPayload {

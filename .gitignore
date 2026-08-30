@@ -10,3 +10,4 @@ frontend/.next/
 frontend/.vercel/
 frontend/.env.development
 frontend/.env*.local
+frontend/tsconfig.tsbuildinfo

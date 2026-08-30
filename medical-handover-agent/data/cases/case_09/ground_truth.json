@@ -1,0 +1,21 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "apixaban_restarted_omitted",
+      "category": "medication",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "The current restart of apixaban at reduced dose is omitted.",
+      "evidence_sources": [
+        "current_surgical_note.txt",
+        "medication_orders.txt",
+        "nursing_notes.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not flag apixaban as currently withheld; that statement is stale.",
+    "Do not flag active bleeding because current notes explicitly deny it.",
+    "Do not treat the old home dose as the current dose."
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "case_id": "case_15",
+  "title": "Timeline contradiction with noisy historical information and one current critical action",
+  "difficulty": "hard",
+  "patient_id": "SYN-0015",
+  "age": 81,
+  "sex": "F",
+  "admission_reason": "Delirium and recurrent falls",
+  "current_location": "Geriatric Medicine Ward"
+}

@@ -1,0 +1,10 @@
+{
+  "case_id": "case_08",
+  "title": "Stale resolved danger versus current active issue",
+  "difficulty": "medium",
+  "patient_id": "SYN-0008",
+  "age": 55,
+  "sex": "F",
+  "admission_reason": "Diabetic ketoacidosis, now resolving",
+  "current_location": "Medical Ward B"
+}

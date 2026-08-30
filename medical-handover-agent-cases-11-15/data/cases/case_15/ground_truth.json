@@ -1,0 +1,40 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "one_to_one_supervision_omitted",
+      "category": "safety",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "The requirement for one-to-one overnight supervision is omitted.",
+      "evidence_sources": [
+        "current_progress_note.txt"
+      ]
+    },
+    {
+      "finding_id": "two_person_transfer_assistance_omitted",
+      "category": "mobility_safety",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "The need for two-person assistance with transfers is omitted.",
+      "evidence_sources": [
+        "physiotherapy_note.txt"
+      ]
+    },
+    {
+      "finding_id": "sedative_discontinued_due_to_delirium_omitted",
+      "category": "medication",
+      "importance": "high",
+      "status": "omitted",
+      "expected_text": "The sedative was discontinued as a likely contributor to delirium, and this medication change is omitted.",
+      "evidence_sources": [
+        "current_progress_note.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not flag infection treatment as still required; current evidence says antibiotics were stopped.",
+    "Do not confuse historical catheterization with a current catheter.",
+    "Do not treat the resolved 2025 delirium as the same episode as the current delirium.",
+    "Do not recommend general observation as sufficient when one-to-one supervision is specifically required."
+  ]
+}

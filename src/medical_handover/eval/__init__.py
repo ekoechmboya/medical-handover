@@ -1,0 +1,1 @@
+"""Evaluation package. Ground truth is opened only inside the scoring phase."""

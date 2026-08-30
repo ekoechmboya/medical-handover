@@ -1,0 +1,10 @@
+{
+  "case_id": "case_11",
+  "title": "Abnormal result already addressed versus active unresolved risk",
+  "difficulty": "hard",
+  "patient_id": "SYN-0011",
+  "age": 76,
+  "sex": "F",
+  "admission_reason": "Pneumonia with acute kidney injury",
+  "current_location": "Medical Ward C"
+}

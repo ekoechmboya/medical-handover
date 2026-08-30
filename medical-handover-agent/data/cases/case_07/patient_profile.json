@@ -1,0 +1,10 @@
+{
+  "case_id": "case_07",
+  "title": "No meaningful omission \u2014 false-positive control",
+  "difficulty": "medium",
+  "patient_id": "SYN-0007",
+  "age": 39,
+  "sex": "M",
+  "admission_reason": "Acute asthma exacerbation",
+  "current_location": "Emergency Observation Unit"
+}

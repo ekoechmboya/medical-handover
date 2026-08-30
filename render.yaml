@@ -1,0 +1,35 @@
+# Render blueprint for the Medical Handover Quality Agent API.
+#
+# The Django backend lives in backend/; the engine package is imported from
+# <repo>/src via sys.path in backend/config/settings.py, so both must be in the
+# committed repo (there are no generated/copied files to build).
+#
+# Secrets are intentionally NOT set here (sync: false -> fill in the Render
+# dashboard): DATABASE_URL, GEMINI_API_KEY. Values are documented in
+# README / the deployment notes.
+services:
+  - type: web
+    name: medical-handover-quality-api
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    postDeployCommand: python manage.py migrate --noinput
+    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 1 --timeout 600 --access-logfile -
+    healthCheckPath: /api/health/
+    autoDeploy: true
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings
+      - key: DJANGO_DEBUG
+        value: "0"
+      - key: MH_EMITTER_BACKEND
+        value: gemini
+      - key: MH_EMITTER_MODEL
+        value: gemini-3.6-flash
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false

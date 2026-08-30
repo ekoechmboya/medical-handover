@@ -1,0 +1,10 @@
+{
+  "case_id": "case_05",
+  "title": "Scheduled procedure omitted",
+  "difficulty": "easy",
+  "patient_id": "SYN-0005",
+  "age": 62,
+  "sex": "F",
+  "admission_reason": "Biliary obstruction investigation",
+  "current_location": "Surgical Ward"
+}

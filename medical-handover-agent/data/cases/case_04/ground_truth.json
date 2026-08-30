@@ -1,0 +1,18 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "overnight_respiratory_deterioration_omitted",
+      "category": "recent_deterioration",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "The overnight respiratory deterioration and oxygen escalation from 2 L to 4 L are omitted.",
+      "evidence_sources": [
+        "nursing_notes.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not state the patient is currently unstable.",
+    "Do not flag the COPD diagnosis."
+  ]
+}

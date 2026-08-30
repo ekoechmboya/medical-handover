@@ -1,0 +1,51 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "warfarin_hold_omitted",
+      "category": "medication",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "Warfarin is temporarily held due to elevated INR, but this is omitted.",
+      "evidence_sources": [
+        "medication_orders.txt",
+        "lab_results.txt"
+      ]
+    },
+    {
+      "finding_id": "worsening_renal_function_omitted",
+      "category": "clinical_status",
+      "importance": "high",
+      "status": "omitted",
+      "expected_text": "Worsening renal function with low urine output is omitted.",
+      "evidence_sources": [
+        "lab_results.txt",
+        "nursing_notes.txt"
+      ]
+    },
+    {
+      "finding_id": "repeat_renal_profile_pending_omitted",
+      "category": "pending_result",
+      "importance": "high",
+      "status": "omitted",
+      "expected_text": "The repeat renal profile scheduled for 22:00 is omitted.",
+      "evidence_sources": [
+        "lab_results.txt"
+      ]
+    },
+    {
+      "finding_id": "strict_fluid_balance_omitted",
+      "category": "monitoring",
+      "importance": "high",
+      "status": "omitted",
+      "expected_text": "Strict fluid balance monitoring is omitted.",
+      "evidence_sources": [
+        "medication_orders.txt",
+        "nursing_notes.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not flag current blood pressure instability; current notes say it stabilized.",
+    "Do not flag ceftriaxone because continuing antibiotics is communicated."
+  ]
+}

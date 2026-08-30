@@ -1,0 +1,20 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "scheduled_ercp_omitted",
+      "category": "procedure",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "The scheduled ERCP and preparation requirements are omitted.",
+      "evidence_sources": [
+        "progress_note.txt",
+        "procedure_schedule.txt",
+        "nursing_notes.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not invent a procedure result.",
+    "Do not flag stability because it is included."
+  ]
+}

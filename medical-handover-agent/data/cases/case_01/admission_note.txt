@@ -1,0 +1,9 @@
+Admission Note — 2026-08-28 08:10
+Patient admitted with fever, productive cough, and shortness of breath.
+
+Allergies:
+- Penicillin: previous anaphylactic reaction requiring emergency treatment.
+
+Initial plan:
+- Treat pneumonia with a non-penicillin antibiotic.
+- Monitor oxygen saturation and respiratory status.

@@ -1,0 +1,19 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "furosemide_change_omitted",
+      "category": "medication",
+      "importance": "high",
+      "status": "omitted",
+      "expected_text": "The current IV furosemide regimen and change from the previous oral regimen are not explicitly communicated.",
+      "evidence_sources": [
+        "progress_note.txt",
+        "nursing_notes.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not flag blood-pressure monitoring because it is included.",
+    "Do not treat the old oral regimen as current."
+  ]
+}

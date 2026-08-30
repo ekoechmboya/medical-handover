@@ -1,0 +1,10 @@
+{
+  "case_id": "case_13",
+  "title": "Discontinued medication, look-alike names, and hidden adverse reaction",
+  "difficulty": "hard",
+  "patient_id": "SYN-0013",
+  "age": 59,
+  "sex": "F",
+  "admission_reason": "Cellulitis with medication-related complication",
+  "current_location": "Medical Ward D"
+}

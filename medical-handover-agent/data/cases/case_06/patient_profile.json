@@ -1,0 +1,10 @@
+{
+  "case_id": "case_06",
+  "title": "Multiple critical omissions across fragmented records",
+  "difficulty": "medium",
+  "patient_id": "SYN-0006",
+  "age": 74,
+  "sex": "F",
+  "admission_reason": "Sepsis secondary to urinary tract infection",
+  "current_location": "High Dependency Unit"
+}

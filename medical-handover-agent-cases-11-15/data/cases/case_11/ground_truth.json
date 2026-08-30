@@ -1,0 +1,43 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "worsening_aki_omitted",
+      "category": "clinical_status",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "Worsening renal function and reduced urine output are not communicated.",
+      "evidence_sources": [
+        "lab_history.txt",
+        "current_progress_note.txt",
+        "nursing_notes.txt"
+      ]
+    },
+    {
+      "finding_id": "nephrology_review_pending_omitted",
+      "category": "pending_consult",
+      "importance": "high",
+      "status": "omitted",
+      "expected_text": "The requested nephrology review is pending and omitted.",
+      "evidence_sources": [
+        "current_progress_note.txt",
+        "consult_request.txt"
+      ]
+    },
+    {
+      "finding_id": "renal_safety_plan_omitted",
+      "category": "monitoring",
+      "importance": "high",
+      "status": "omitted",
+      "expected_text": "Avoiding nephrotoxic medication and strict intake/output monitoring are omitted.",
+      "evidence_sources": [
+        "current_progress_note.txt",
+        "nursing_notes.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not flag hyperkalemia as an active omission; it was treated and is now normal.",
+    "Do not recommend repeating emergency hyperkalemia treatment.",
+    "Do not treat the old critical result as more current than the latest normal result."
+  ]
+}

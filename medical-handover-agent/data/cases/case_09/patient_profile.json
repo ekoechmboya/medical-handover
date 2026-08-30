@@ -1,0 +1,10 @@
+{
+  "case_id": "case_09",
+  "title": "Conflicting records requiring recency and source reasoning",
+  "difficulty": "medium",
+  "patient_id": "SYN-0009",
+  "age": 68,
+  "sex": "M",
+  "admission_reason": "Post-operative recovery after bowel surgery",
+  "current_location": "Surgical Ward"
+}

@@ -1,0 +1,10 @@
+{
+  "case_id": "case_12",
+  "title": "Cross-department transfer with buried active monitoring requirements",
+  "difficulty": "hard",
+  "patient_id": "SYN-0012",
+  "age": 64,
+  "sex": "M",
+  "admission_reason": "Intracerebral hemorrhage recovery",
+  "current_location": "Neurology Ward"
+}

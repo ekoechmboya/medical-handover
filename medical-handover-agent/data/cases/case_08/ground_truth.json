@@ -1,0 +1,20 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "recent_hypoglycemia_omitted",
+      "category": "recent_event",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "Recent hypoglycemic episodes and intensified evening glucose monitoring are omitted.",
+      "evidence_sources": [
+        "current_progress_note.txt",
+        "nursing_notes.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not flag the initial severe hyperkalemia as a current issue because later results normalized.",
+    "Do not flag DKA as unresolved because the current record documents resolution.",
+    "Do not treat historical hypotension as an active omission."
+  ]
+}

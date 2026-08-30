@@ -1,0 +1,59 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "specific_bp_target_omitted",
+      "category": "monitoring_target",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "The systolic blood-pressure target of 120-140 mmHg is omitted.",
+      "evidence_sources": [
+        "icu_handover.txt"
+      ]
+    },
+    {
+      "finding_id": "neuro_observation_frequency_omitted",
+      "category": "monitoring",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "The required 2-hourly neurological observation frequency is omitted.",
+      "evidence_sources": [
+        "neurology_admission.txt"
+      ]
+    },
+    {
+      "finding_id": "escalation_triggers_omitted",
+      "category": "escalation",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "Specific escalation triggers for neurological deterioration are omitted.",
+      "evidence_sources": [
+        "neurology_admission.txt"
+      ]
+    },
+    {
+      "finding_id": "anticoagulant_restriction_omitted",
+      "category": "medication_safety",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "The restriction against anticoagulants without neurology approval is omitted.",
+      "evidence_sources": [
+        "medication_orders.txt"
+      ]
+    },
+    {
+      "finding_id": "fall_risk_omitted",
+      "category": "safety",
+      "importance": "high",
+      "status": "omitted",
+      "expected_text": "Residual weakness and high fall risk during mobilization are omitted.",
+      "evidence_sources": [
+        "physiotherapy_note.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not require hourly neurological observations; that was the ICU frequency and is no longer current.",
+    "Do not flag the IV antihypertensive infusion as active because it was discontinued.",
+    "Do not state the patient is currently unstable."
+  ]
+}

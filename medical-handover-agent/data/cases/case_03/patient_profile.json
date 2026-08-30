@@ -1,0 +1,10 @@
+{
+  "case_id": "case_03",
+  "title": "Pending critical laboratory result omitted",
+  "difficulty": "easy",
+  "patient_id": "SYN-0003",
+  "age": 46,
+  "sex": "F",
+  "admission_reason": "Severe vomiting and dehydration",
+  "current_location": "Emergency Observation Unit"
+}

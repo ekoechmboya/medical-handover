@@ -1,0 +1,50 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "repeat_troponin_pending_not_explicit",
+      "category": "pending_result",
+      "importance": "critical",
+      "status": "partially_omitted",
+      "expected_text": "The handover vaguely says tests are pending but does not explicitly identify the pending repeat troponin.",
+      "evidence_sources": [
+        "lab_results.txt"
+      ]
+    },
+    {
+      "finding_id": "telemetry_requirement_omitted",
+      "category": "monitoring",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "Overnight telemetry is omitted.",
+      "evidence_sources": [
+        "cardiology_note.txt",
+        "nursing_notes.txt"
+      ]
+    },
+    {
+      "finding_id": "chest_pain_recurrence_plan_omitted",
+      "category": "escalation",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "The instruction to repeat ECG and escalate if chest pain recurs is omitted.",
+      "evidence_sources": [
+        "cardiology_note.txt"
+      ]
+    },
+    {
+      "finding_id": "urgent_cardiology_review_omitted",
+      "category": "pending_consult",
+      "importance": "high",
+      "status": "omitted",
+      "expected_text": "The planned urgent cardiology review is omitted.",
+      "evidence_sources": [
+        "cardiology_note.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not prioritize the routine echocardiogram above the pending troponin and telemetry requirement.",
+    "Do not say the patient currently has ongoing chest pain.",
+    "Do not claim STEMI because no ST elevation is documented."
+  ]
+}

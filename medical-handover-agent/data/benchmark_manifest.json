@@ -1,0 +1,67 @@
+{
+  "benchmark_name": "Medical Handover Quality Benchmark",
+  "version": "0.2.0",
+  "case_count": 10,
+  "cases": [
+    {
+      "case_id": "case_01",
+      "title": "Severe penicillin allergy omitted",
+      "difficulty": "easy",
+      "expected_findings": 1
+    },
+    {
+      "case_id": "case_02",
+      "title": "Current medication change omitted",
+      "difficulty": "easy",
+      "expected_findings": 1
+    },
+    {
+      "case_id": "case_03",
+      "title": "Pending critical laboratory result omitted",
+      "difficulty": "easy",
+      "expected_findings": 1
+    },
+    {
+      "case_id": "case_04",
+      "title": "Overnight deterioration omitted",
+      "difficulty": "easy",
+      "expected_findings": 1
+    },
+    {
+      "case_id": "case_05",
+      "title": "Scheduled procedure omitted",
+      "difficulty": "easy",
+      "expected_findings": 1
+    },
+    {
+      "case_id": "case_06",
+      "title": "Multiple critical omissions across fragmented records",
+      "difficulty": "medium",
+      "expected_findings": 4
+    },
+    {
+      "case_id": "case_07",
+      "title": "No meaningful omission \u2014 false-positive control",
+      "difficulty": "medium",
+      "expected_findings": 0
+    },
+    {
+      "case_id": "case_08",
+      "title": "Stale resolved danger versus current active issue",
+      "difficulty": "medium",
+      "expected_findings": 1
+    },
+    {
+      "case_id": "case_09",
+      "title": "Conflicting records requiring recency and source reasoning",
+      "difficulty": "medium",
+      "expected_findings": 1
+    },
+    {
+      "case_id": "case_10",
+      "title": "Implied wording, partial communication, and unresolved follow-up",
+      "difficulty": "medium",
+      "expected_findings": 2
+    }
+  ]
+}

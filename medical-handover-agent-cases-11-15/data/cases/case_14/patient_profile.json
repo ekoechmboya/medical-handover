@@ -1,0 +1,10 @@
+{
+  "case_id": "case_14",
+  "title": "Multiple pending items requiring priority ranking and timeline reasoning",
+  "difficulty": "hard",
+  "patient_id": "SYN-0014",
+  "age": 72,
+  "sex": "M",
+  "admission_reason": "Chest pain under investigation",
+  "current_location": "Cardiac Observation Unit"
+}

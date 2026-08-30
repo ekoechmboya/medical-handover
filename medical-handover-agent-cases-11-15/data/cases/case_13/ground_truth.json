@@ -1,0 +1,32 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "clindamycin_reaction_omitted",
+      "category": "allergy_or_adverse_reaction",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "The significant reaction to clindamycin and instruction to avoid further doses are omitted.",
+      "evidence_sources": [
+        "progress_note.txt",
+        "medication_orders.txt"
+      ]
+    },
+    {
+      "finding_id": "methotrexate_hold_omitted",
+      "category": "medication",
+      "importance": "high",
+      "status": "omitted",
+      "expected_text": "Methotrexate remains held during acute infection and this is omitted.",
+      "evidence_sources": [
+        "old_orders.txt",
+        "medication_orders.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not flag clindamycin as an active medication; it was discontinued.",
+    "Do not confuse metoprolol with methotrexate.",
+    "Do not claim the rash is worsening; current notes say it is improving.",
+    "Do not flag doxycycline as intolerated."
+  ]
+}

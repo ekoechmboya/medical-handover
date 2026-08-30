@@ -1,0 +1,10 @@
+{
+  "case_id": "case_02",
+  "title": "Current medication change omitted",
+  "difficulty": "easy",
+  "patient_id": "SYN-0002",
+  "age": 71,
+  "sex": "M",
+  "admission_reason": "Heart failure exacerbation",
+  "current_location": "Cardiac Ward"
+}

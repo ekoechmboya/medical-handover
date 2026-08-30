@@ -1,0 +1,10 @@
+{
+  "case_id": "case_04",
+  "title": "Overnight deterioration omitted",
+  "difficulty": "easy",
+  "patient_id": "SYN-0004",
+  "age": 67,
+  "sex": "M",
+  "admission_reason": "COPD exacerbation",
+  "current_location": "Respiratory Ward"
+}

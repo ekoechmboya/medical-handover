@@ -1,0 +1,10 @@
+Laboratory Timeline
+2026-08-27 06:00 Potassium 6.3 mmol/L — CRITICAL
+2026-08-27 07:00 Emergency treatment started.
+2026-08-27 10:00 Potassium 5.1 mmol/L.
+2026-08-28 06:00 Potassium 4.7 mmol/L — NORMAL.
+
+Creatinine trend:
+Baseline 1.0 mg/dL
+2026-08-27 2.1 mg/dL
+2026-08-28 2.6 mg/dL — WORSENING

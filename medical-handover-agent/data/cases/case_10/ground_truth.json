@@ -1,0 +1,31 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "mri_pending_not_explicit",
+      "category": "pending_investigation",
+      "importance": "high",
+      "status": "partially_omitted",
+      "expected_text": "Further assessment is vaguely implied, but the deferred MRI and morning plan are not explicitly communicated.",
+      "evidence_sources": [
+        "imaging_report.txt",
+        "neurology_note.txt",
+        "nursing_notes.txt"
+      ]
+    },
+    {
+      "finding_id": "specific_escalation_criteria_omitted",
+      "category": "monitoring",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "Specific escalation triggers for recurrent focal deficit, speech change, or new confusion are omitted.",
+      "evidence_sources": [
+        "neurology_note.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not flag the CT result as missing; 'CT showed no bleed' is present.",
+    "Do not claim the patient currently has neurological deficits.",
+    "Do not count generic 'close observation' as automatically equivalent to the specific escalation criteria."
+  ]
+}

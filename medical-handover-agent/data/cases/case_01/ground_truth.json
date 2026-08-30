@@ -1,0 +1,19 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "penicillin_allergy_omitted",
+      "category": "allergy",
+      "importance": "critical",
+      "status": "omitted",
+      "expected_text": "History of severe penicillin allergy/anaphylaxis is not mentioned in the handover.",
+      "evidence_sources": [
+        "admission_note.txt",
+        "progress_note.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not flag oxygen monitoring because it is included.",
+    "Do not flag pneumonia because it is included."
+  ]
+}

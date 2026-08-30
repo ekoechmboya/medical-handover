@@ -1,0 +1,10 @@
+{
+  "case_id": "case_01",
+  "title": "Severe penicillin allergy omitted",
+  "difficulty": "easy",
+  "patient_id": "SYN-0001",
+  "age": 58,
+  "sex": "F",
+  "admission_reason": "Community-acquired pneumonia",
+  "current_location": "Medical Ward A"
+}

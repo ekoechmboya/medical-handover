@@ -1,0 +1,9 @@
+{
+  "expected_findings": [],
+  "negative_findings": [
+    "Correct result is no critical omission.",
+    "Do not flag historical viral trigger because it does not require active handover action.",
+    "Do not flag oxygen monitoring because current status and lack of requirement are included.",
+    "Do not invent pending investigations or medication changes."
+  ]
+}

@@ -1,0 +1,5 @@
+Laboratory Trend
+2026-08-27 03:30: Potassium 6.1 mmol/L
+2026-08-27 08:00: Potassium 4.9 mmol/L
+2026-08-28 12:00: Potassium 4.3 mmol/L
+2026-08-28 12:00: Anion gap closed.

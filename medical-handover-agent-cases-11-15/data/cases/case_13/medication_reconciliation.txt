@@ -1,0 +1,4 @@
+Medication Reconciliation
+Home medications:
+- Metformin 500 mg twice daily
+- Methotrexate 15 mg weekly for rheumatoid arthritis

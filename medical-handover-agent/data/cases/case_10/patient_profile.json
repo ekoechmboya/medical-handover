@@ -1,0 +1,10 @@
+{
+  "case_id": "case_10",
+  "title": "Implied wording, partial communication, and unresolved follow-up",
+  "difficulty": "medium",
+  "patient_id": "SYN-0010",
+  "age": 63,
+  "sex": "F",
+  "admission_reason": "Possible transient ischemic attack",
+  "current_location": "Neurology Observation Unit"
+}

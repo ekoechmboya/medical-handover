@@ -1,0 +1,19 @@
+{
+  "expected_findings": [
+    {
+      "finding_id": "pending_potassium_omitted",
+      "category": "pending_result",
+      "importance": "high",
+      "status": "omitted",
+      "expected_text": "The pending repeat potassium result is not communicated in the handover.",
+      "evidence_sources": [
+        "lab_results.txt",
+        "progress_note.txt"
+      ]
+    }
+  ],
+  "negative_findings": [
+    "Do not claim potassium is abnormal because the repeat result is unavailable.",
+    "Do not flag hydration improvement because it is included."
+  ]
+}

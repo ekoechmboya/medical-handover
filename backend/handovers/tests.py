@@ -1,6 +1,10 @@
 """API tests for the Medical Handover Quality Agent Django backend.
 
-Run with:  python backend/manage.py test handovers
+Requires the Supabase Postgres DATABASE_URL from .env. Use --keepdb: the
+session pooler holds a pooled connection to the test DB, so Django cannot drop
+it at teardown; the test database is created once then reused.
+
+Run with:  python backend/manage.py test handovers --keepdb
 """
 
 from __future__ import annotations

@@ -1,8 +1,9 @@
 /**
  * Typed API client for the Medical Handover Quality Agent backend.
  *
- * Base URL comes from NEXT_PUBLIC_API_BASE_URL with a localhost fallback so the
- * app runs out of the box during the hackathon demo.
+ * Base URL comes from NEXT_PUBLIC_API_BASE_URL; the default is the deployed
+ * Render backend. Override with an env var when pointing at a local Django
+ * instance (e.g. NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000).
  */
 
 import type {
@@ -15,7 +16,7 @@ import type {
   ReviewSummary,
 } from "@/types/api";
 
-export const DEFAULT_API_BASE_URL = "http://127.0.0.1:8000";
+export const DEFAULT_API_BASE_URL = "https://medical-handover.onrender.com";
 
 export function apiBaseUrl(): string {
   const url = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();

@@ -68,21 +68,25 @@ USE_I18N = False
 USE_TZ = True
 
 # ---------------------------------------------------------------------------
-# Database: production uses the Supabase Postgres URI from DATABASE_URL; local
-# development and the test suite keep the zero-dependency SQLite file when the
-# variable is absent. The engine/models make no SQLite-specific assumptions, so
-# nothing else needs to differ between the two backends.
+# Database: Supabase Postgres only. DATABASE_URL is REQUIRED in every
+# environment (local .env, Render dashboard env vars). There is deliberately no
+# SQLite fallback: the app must never silently run on an ephemeral file DB.
 # ---------------------------------------------------------------------------
 import dj_database_url  # noqa: E402
+from django.core.exceptions import ImproperlyConfigured  # noqa: E402
+
+if not os.environ.get("DATABASE_URL"):
+    raise ImproperlyConfigured(
+        "DATABASE_URL must be set (Supabase/Postgres URI). SQLite is not "
+        "supported anymore - set DATABASE_URL in .env for local development "
+        "and in the Render service environment."
+    )
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=60,
-    )
+    "default": dj_database_url.config(conn_max_age=60),
 }
 # psycopg + managed/pooled connections (Supabase): never use server-side
-# cursors so each request commits cleanly. Harmless for the local SQLite default.
+# cursors so each request commits cleanly.
 DISABLE_SERVER_SIDE_CURSORS = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
